@@ -3,5 +3,5 @@ export default interface StackActions<T> {
   pop(): T | undefined;
   isEmpty(): boolean;
   size(): number;
-  peak(): T | undefined;
+  peek(): T | undefined;
 }

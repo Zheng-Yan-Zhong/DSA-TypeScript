@@ -16,7 +16,7 @@ class Stack<T> implements StackActions<T> {
     if (this.items.length === 0) return undefined;
     return this.items.pop();
   }
-  peak(): T | undefined {
+  peek(): T | undefined {
     if (this.isEmpty()) return undefined;
     return this.items[this.items.length - 1];
   }
