@@ -6,14 +6,6 @@ class BinaryTree<T> implements TreeActions<T> {
     this.root = null;
   }
 
-  // insert(value: T): T {
-  //   const node = new Node(value);
-  //   if (this.root === null) {
-  //     this.root = node;
-  //     return node.data;
-  //   }
-  // }
-
   inOrder(): T[] {
     const output: T[] = [];
     _inOrder(this.root); //recursion
@@ -26,44 +18,63 @@ class BinaryTree<T> implements TreeActions<T> {
       output.push(node.data);
       if (node.right) _inOrder(node.right);
     }
-    console.log(output);
+    console.log("inOrder", output);
     return output;
   }
 
   preOrder(): T[] {
     const output: T[] = [];
-    _inOrder(this.root); //recursion
+    _preOrder(this.root); //recursion
 
-    function _inOrder(node: Node<T> | null) {
+    function _preOrder(node: Node<T> | null) {
       if (!node) return; // boundary
       console.log(node.data);
 
       output.push(node.data);
-      if (node.left) _inOrder(node.left);
-      if (node.right) _inOrder(node.right);
+      if (node.left) _preOrder(node.left);
+      if (node.right) _preOrder(node.right);
     }
-    console.log(output);
+    console.log("preOrder", output);
 
     return output;
   }
   postOrder(): T[] {
     const output: T[] = [];
-    _inOrder(this.root); //recursion
+    _postOrder(this.root); //recursion
 
-    function _inOrder(node: Node<T> | null) {
+    function _postOrder(node: Node<T> | null) {
       if (!node) return; // boundary
       console.log(node.data);
 
-      if (node.left) _inOrder(node.left);
-      if (node.right) _inOrder(node.right);
+      if (node.left) _postOrder(node.left);
+      if (node.right) _postOrder(node.right);
       output.push(node.data);
     }
-    console.log(output);
+    console.log("postOrder", output);
 
     return output;
   }
   levelOrder(): T[] {
-    return [];
+    if (!this.root) return [];
+
+    const queue: Node<T>[] = [this.root];
+    const result: T[] = [];
+
+    while (queue.length > 0) {
+      const node = queue.shift();
+      if (node) {
+        result.push(node.data);
+
+        if (node.left) {
+          queue.push(node.left);
+        }
+        if (node.right) {
+          queue.push(node.right);
+        }
+      }
+    }
+
+    return result;
   }
 }
 
@@ -79,3 +90,4 @@ binary_tree.root.right.right = new Node(30);
 binary_tree.preOrder(); //[ 5, 3, 9, 1, 12, 30 ]
 binary_tree.inOrder(); // [ 9, 3, 1, 5, 12, 30 ]
 binary_tree.postOrder(); //[ 9, 1, 3, 30, 12, 5 ]
+binary_tree.levelOrder(); //[ 5, 3, 12, 9, 1, 30 ]

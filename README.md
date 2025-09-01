@@ -25,8 +25,6 @@
         - [Pre Order Traversal](#pre-order-traversal)
         - [Post Order Traversal](#post-order-traversal)
         - [Level Order Traversal](#level-order-traversal)
-      - [Binary Tree](#binary-tree)
-        - [Implements](#implements)
   - [Algorithms](#algorithms)
 
 ## Environment
@@ -296,14 +294,6 @@ class BinaryTree<T> implements TreeActions<T> {
     this.root = null;
   }
 
-  // insert(value: T): T {
-  //   const node = new Node(value);
-  //   if (this.root === null) {
-  //     this.root = node;
-  //     return node.data;
-  //   }
-  // }
-
   inOrder(): T[] {
     return [];
   }
@@ -446,15 +436,15 @@ inOrder(): T[] {
 ```typescript
 postOrder(): T[] {
   const output: T[] = [];
-  _inOrder(this.root); //recursion
+  _preOrder(this.root); //recursion
 
-  function _inOrder(node: Node<T> | null) {
+  function _preOrder(node: Node<T> | null) {
     if (!node) return; // boundary
     console.log(node.data);
 
     output.push(node.data);
-    if (node.left) _inOrder(node.left);
-    if (node.right) _inOrder(node.right);
+    if (node.left) _preOrder(node.left);
+    if (node.right) _preOrder(node.right);
   }
   console.log(output);
   return output;
@@ -468,14 +458,14 @@ postOrder(): T[] {
 ```typescript
 postOrder(): T[] {
     const output: T[] = [];
-    _inOrder(this.root); //recursion
+    _postOrder(this.root); //recursion
 
-    function _inOrder(node: Node<T> | null) {
+    function _postOrder(node: Node<T> | null) {
       if (!node) return; // boundary
       console.log(node.data);
 
-      if (node.left) _inOrder(node.left);
-      if (node.right) _inOrder(node.right);
+      if (node.left) _postOrder(node.left);
+      if (node.right) _postOrder(node.right);
       output.push(node.data);
     }
     console.log(output);
@@ -485,83 +475,6 @@ postOrder(): T[] {
 ```
 
 ##### Level Order Traversal
-
-#### Binary Tree
-
-##### Implements
-
-```typescript
-import Node from "./Node.ts";
-import type TreeActions from "./TreeActions.ts";
-
-class BinaryTree<T> implements TreeActions<T> {
-  private root: Node<T> | null;
-
-  constructor() {
-    this.root = null;
-  }
-
-  insert(value: T): T {}
-
-  inOrder(): T[] {
-    return [];
-  }
-  preOrder(): T[] {
-    return [];
-  }
-  postOrder(): T[] {
-    return [];
-  }
-
-  levelOrder(): T[] {
-    return [];
-  }
-}
-```
-
-Insert
-
-$S={ 5,3,12,9,1 }$
-
-依照上到下、左至右規則，類似 Level Order 進行插入。
-
-```
-     5
-
-
-     5
-    /
-   3
-
-     5
-    / \
-   3   12
-
-
-     5
-    / \
-   3   12
-  /
- 9
-
-     5
-    / \
-   3   12
-  /\
- 9  1
-
-```
-
-```typescript
-  insert(value: T): T {
-    const node = new Node(value);
-    if (this.root === null) {
-      this.root = node;
-      return node.data;
-    }
-  }
-
-```
 
 ---
 
