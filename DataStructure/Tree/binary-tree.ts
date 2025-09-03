@@ -1,6 +1,6 @@
 import Node from "./Node";
 import type TreeActions from "./TreeActions";
-class BinaryTree<T> implements TreeActions<T> {
+export default class BinaryTree<T> implements TreeActions<T> {
   public root: Node<T> | null;
   constructor() {
     this.root = null;
@@ -80,14 +80,14 @@ class BinaryTree<T> implements TreeActions<T> {
 
 const binary_tree = new BinaryTree();
 
-binary_tree.root = new Node(5);
-binary_tree.root.left = new Node(3);
-binary_tree.root.right = new Node(12);
-binary_tree.root.left.left = new Node(9);
-binary_tree.root.left.right = new Node(1);
-binary_tree.root.right.right = new Node(30);
+// binary_tree.root = new Node(5);
+// binary_tree.root.left = new Node(3);
+// binary_tree.root.right = new Node(12);
+// binary_tree.root.left.left = new Node(9);
+// binary_tree.root.left.right = new Node(1);
+// binary_tree.root.right.right = new Node(30);
 
-binary_tree.preOrder(); //[ 5, 3, 9, 1, 12, 30 ]
-binary_tree.inOrder(); // [ 9, 3, 1, 5, 12, 30 ]
-binary_tree.postOrder(); //[ 9, 1, 3, 30, 12, 5 ]
-binary_tree.levelOrder(); //[ 5, 3, 12, 9, 1, 30 ]
+// binary_tree.preOrder(); //[ 5, 3, 9, 1, 12, 30 ]
+// binary_tree.inOrder(); // [ 9, 3, 1, 5, 12, 30 ]
+// binary_tree.postOrder(); //[ 9, 1, 3, 30, 12, 5 ]
+// binary_tree.levelOrder(); //[ 5, 3, 12, 9, 1, 30 ]
