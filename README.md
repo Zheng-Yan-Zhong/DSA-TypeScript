@@ -32,9 +32,9 @@
         - [Time Complexity](#time-complexity-2)
         - [Height](#height)
         - [Balance Factor](#balance-factor)
+        - [Right Rotation](#right-rotation)
+        - [Left Rotation](#left-rotation)
         - [Insert](#insert)
-        - [Left Rotate](#left-rotate)
-        - [Right Rotate](#right-rotate)
         - [Left-Right Rotate](#left-right-rotate)
         - [Right-Left Rotate](#right-left-rotate)
   - [Algorithms](#algorithms)
@@ -639,6 +639,8 @@ $O(log_2n)$
 
 ![](./DataStructure/Tree/image/unbalancing-avl-tree.jpg)
 
+可以看到在 Step3 的 $Abs(BF)$ 超過 1，這時候就會進行平衡(Balancing)
+
 ##### Height
 
 $Height = 1 + max(left,right)$
@@ -661,12 +663,52 @@ $Value = Either -1, 0 or +1$
 
 $Abs(Balance Factor) \le 1$
 
-可以看到在 Step3 的 $Abs(BF)$ 超過 1，這時候就會進行平衡(Balancing)
-
 ```typescript
 getBalanceFactor(node: Node<T> | null) {
     if (!node) return 0;
     return this.getNodeHeight(node.left) - this.getNodeHeight(node.right);
+  }
+```
+
+##### Right Rotation
+
+![](./DataStructure/Tree/image/avl-right-rotate.jpg)
+
+```typescript
+rotateRight(node: Node<T>): Node<T> {
+    if (!node.left) return node; // the node doesn't have a left subtree, therefore it can't do rotation
+
+    // move to the top
+    const newRoot = node.left;
+    // store pre right subtree
+    const preRightNode = newRoot.right;
+
+    // rotating, pre top becomes to new top's right subtree
+    newRoot.right = node;
+    node.left = preRightNode;
+
+    return newRoot;
+  }
+```
+
+##### Left Rotation
+
+![](./DataStructure/Tree/image/avl-left-rotate.jpg)
+
+```typescript
+  rotateLeft(node: Node<T>): Node<T> {
+    if (!node.right) return node; // The node doesn't have a right subtree, therefore, can't do rotation
+
+    // move to the top
+    const newRoot = node.right;
+    // store pre right subtree
+    const preLeftNode = newRoot.left;
+
+    // rotating, pre top becomes to new top's right subtree
+    newRoot.left = node;
+    node.right = preLeftNode;
+
+    return newRoot;
   }
 ```
 
@@ -684,10 +726,6 @@ class AvlTree<T> extends BST<T> {
   insert(value: T) {}
 }
 ```
-
-##### Left Rotate
-
-##### Right Rotate
 
 ##### Left-Right Rotate
 
