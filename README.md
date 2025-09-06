@@ -28,6 +28,15 @@
       - [Binary Search Tree](#binary-search-tree)
         - [Loop Ver.](#loop-ver)
         - [Recursion Ver.](#recursion-ver)
+      - [AVL Tree](#avl-tree)
+        - [Time Complexity](#time-complexity-2)
+        - [Height](#height)
+        - [Balance Factor](#balance-factor)
+        - [Insert](#insert)
+        - [Left Rotate](#left-rotate)
+        - [Right Rotate](#right-rotate)
+        - [Left-Right Rotate](#left-right-rotate)
+        - [Right-Left Rotate](#right-left-rotate)
   - [Algorithms](#algorithms)
 
 ## Environment
@@ -374,7 +383,7 @@ display(root->data)
 inOrder(root->right)
 ```
 
-![](./DataStructure/Tree/image/inOrderTraversal.jpg)
+![](./DataStructure/Tree/image/in-order-traversal.jpg)
 
 可以看到將每個子樹(Subtree)一一拆解，就可以得知規律，也就是說每個節點都可以依照遞迴(Recursion)進行拆分。
 
@@ -509,7 +518,7 @@ levelOrder(): T[] {
 - 左節點比父節點小
 - 右節點比父節點大
 
-![](/DataStructure/Tree/image/binarySerachTree.jpg)
+![](/DataStructure/Tree/image/binary-serach-tree.jpg)
 
 ##### Loop Ver.
 
@@ -534,6 +543,7 @@ class BinarySearchTree<T> extends BinaryTree<T> {
       // boundary
       if (value == currentNode.data) break;
 
+      // current node's value is less than value
       if (value > currentNode.data) {
         if (currentNode.right != null) {
           currentNode = currentNode.right;
@@ -542,6 +552,7 @@ class BinarySearchTree<T> extends BinaryTree<T> {
           break;
         }
       } else if (value < currentNode.data) {
+        // current node's value is greater than value
         if (currentNode.left != null) {
           currentNode = currentNode.left;
         } else {
@@ -595,5 +606,91 @@ console.log(binary_search_tree.levelOrder()); //[ 10, 7, 5 ]
     }
   }
 ```
+
+#### AVL Tree
+
+AVL tree 是自調整二元搜尋樹(Self Balancing Binary Search Tree)，其名字來自 `Georgy Adelson-Velsky and Landis.`。
+
+下圖為二元搜尋樹，可以看到在 Step3 的時候，樹其實是過度傾斜，也可是說變成鏈結串列(Linked List)。
+
+![](/DataStructure/Tree/image/binarySerachTree.jpg)
+
+而 AVL Tree 因為有了調整的因子(Balance Factor)，可以避免二元搜尋樹過度傾斜(Skewed Tree)的問題。
+
+先建立一個實體
+
+```typescript
+// /tree/avl-tree.ts
+import BST from "./binary-search-tree.ts";
+import Node from "./Node.ts";
+
+class AvlTree<T> extends BST<T> {
+  constructor() {
+    super();
+  }
+
+  insert(value: T) {}
+}
+```
+
+##### Time Complexity
+
+$O(log_2n)$
+
+![](./DataStructure/Tree/image/unbalancing-avl-tree.jpg)
+
+##### Height
+
+$Height = 1 + max(left,right)$
+
+```typescript
+getNodeHeight(node: Node<T> | null): number {
+    if (!node) return 0;
+    return (
+      1 +
+      Math.max(this.getNodeHeight(node.left), this.getNodeHeight(node.right))
+    );
+  }
+```
+
+##### Balance Factor
+
+$Balance Factor = Height(left subtree) - Height(right subtree)$
+
+$Value = Either -1, 0 or +1$
+
+$Abs(Balance Factor) \le 1$
+
+可以看到在 Step3 的 $Abs(BF)$ 超過 1，這時候就會進行平衡(Balancing)
+
+```typescript
+getBalanceFactor(node: Node<T> | null) {
+    if (!node) return 0;
+    return this.getNodeHeight(node.left) - this.getNodeHeight(node.right);
+  }
+```
+
+##### Insert
+
+```typescript
+import BST from "./binary-search-tree.ts";
+import Node from "./Node.ts";
+
+class AvlTree<T> extends BST<T> {
+  constructor() {
+    super();
+  }
+
+  insert(value: T) {}
+}
+```
+
+##### Left Rotate
+
+##### Right Rotate
+
+##### Left-Right Rotate
+
+##### Right-Left Rotate
 
 ## Algorithms

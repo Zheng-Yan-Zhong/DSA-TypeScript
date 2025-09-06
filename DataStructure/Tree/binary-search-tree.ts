@@ -70,9 +70,10 @@ class BinarySearchTree<T> extends BinaryTree<T> {
   }
 }
 
-const binary_search_tree = new BinarySearchTree<number>();
-binary_search_tree.insertByRecursion(10);
-binary_search_tree.insertByRecursion(7);
-binary_search_tree.insertByRecursion(5);
+// const binary_search_tree = new BinarySearchTree<number>();
+// binary_search_tree.insertByRecursion(10);
+// binary_search_tree.insertByRecursion(7);
+// binary_search_tree.insertByRecursion(5);
 
-console.log(binary_search_tree.levelOrder()); //[ 10, 7, 5 ]
+// console.log(binary_search_tree.levelOrder()); //[ 10, 7, 5 ]
+export default BinarySearchTree;
