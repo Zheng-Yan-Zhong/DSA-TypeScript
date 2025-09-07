@@ -34,9 +34,8 @@
         - [Balance Factor](#balance-factor)
         - [Right Rotation](#right-rotation)
         - [Left Rotation](#left-rotation)
+        - [Left-Right Rotation](#left-right-rotation)
         - [Insert](#insert)
-        - [Left-Right Rotate](#left-right-rotate)
-        - [Right-Left Rotate](#right-left-rotate)
   - [Algorithms](#algorithms)
 
 ## Environment
@@ -672,10 +671,10 @@ getBalanceFactor(node: Node<T> | null) {
 
 ##### Right Rotation
 
-![](./DataStructure/Tree/image/avl-right-rotate.jpg)
+![](./DataStructure/Tree/image/avl-right-rotation.jpg)
 
 ```typescript
-rotateRight(node: Node<T>): Node<T> {
+  rotateRight(node: Node<T>): Node<T> {
     if (!node.left) return node; // the node doesn't have a left subtree, therefore it can't do rotation
 
     // move to the top
@@ -693,10 +692,10 @@ rotateRight(node: Node<T>): Node<T> {
 
 ##### Left Rotation
 
-![](./DataStructure/Tree/image/avl-left-rotate.jpg)
+![](./DataStructure/Tree/image/avl-left-rotation.jpg)
 
 ```typescript
-  rotateLeft(node: Node<T>): Node<T> {
+   rotateLeft(node: Node<T>): Node<T> {
     if (!node.right) return node; // The node doesn't have a right subtree, therefore, can't do rotation
 
     // move to the top
@@ -712,7 +711,52 @@ rotateRight(node: Node<T>): Node<T> {
   }
 ```
 
+##### Left-Right Rotation
+
+首先，為什麼有了左旋跟右旋還要有 Left-Right Rotate？
+
+先看向下圖的
+
+```
+LL (直線)
+    z
+   /
+  y
+ /
+x
+
+RR (直線)
+z
+ \
+  y
+   \
+    x
+
+```
+
+可以發現這些可以只選轉一次即可平衡
+
+但是像 LR 的這個 Case，當向右旋轉時，Y 的右邊會有 Z 跟 X。
+
+```
+LR (折彎)
+    z
+   /
+  y
+   \
+    x
+
+RL (折彎)
+z
+ \
+  y
+ /
+x
+```
+
 ##### Insert
+
+![](./DataStructure/Tree/image/avl-rotations.jpg)
 
 ```typescript
 import BST from "./binary-search-tree.ts";
@@ -723,12 +767,50 @@ class AvlTree<T> extends BST<T> {
     super();
   }
 
-  insert(value: T) {}
+  insert(value: T) {
+    const _this = this;
+    this.root = _insert(this.root, value);
+    function _insert(node: Node<T> | null, value: T): Node<T> {
+      if (!node) return new Node(value);
+
+      if (value < node.data) {
+        node.left = _insert(node.left, value);
+      } else if (value > node.data) {
+        node.right = _insert(node.right, value);
+      }
+
+      // perform AVL Tree
+
+      const balanceFactor = _this.getBalanceFactor(node);
+
+      //LL
+      if (node.left && balanceFactor > 1 && value < node.left.data) {
+        return _this.rotateRight(node);
+      }
+      //LR
+      if (node.left && balanceFactor > 1 && value > node.left.data) {
+        node.left = _this.rotateLeft(node.left);
+        return _this.rotateRight(node);
+      }
+
+      //RR
+      if (node.right && balanceFactor < 1 && value > node.right.data) {
+        return _this.rotateLeft(node);
+      }
+      //RL
+      if (node.right && balanceFactor < 1 && value < node.right.data) {
+        node.right = _this.rotateRight(node.right);
+        return _this.rotateLeft(node);
+      }
+
+      return node;
+    }
+  }
 }
+const avl_tree = new AvlTree<number>();
+const num_list = [10, 7, 5];
+num_list.forEach((num) => avl_tree.insert(num));
+console.log(avl_tree.levelOrder()); //[7,5,10]
 ```
-
-##### Left-Right Rotate
-
-##### Right-Left Rotate
 
 ## Algorithms
