@@ -1,4 +1,4 @@
-import type QueueActions from "./QueueActions.js";
+import type QueueActions from "./QueueActions.ts";
 
 class Queue<T> implements QueueActions<T> {
   private items: T[] = [];
