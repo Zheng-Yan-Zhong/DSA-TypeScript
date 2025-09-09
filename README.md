@@ -37,6 +37,17 @@
         - [Left-Right Rotation](#left-right-rotation)
         - [Insert](#insert)
   - [Algorithms](#algorithms)
+    - [Search](#search)
+      - [Linear Search](#linear-search)
+        - [Time Complexity](#time-complexity-3)
+      - [Binary Search](#binary-search)
+        - [Time Complexity](#time-complexity-4)
+    - [Sort](#sort)
+      - [Bubble Sort](#bubble-sort)
+      - [Insertion Sort](#insertion-sort)
+      - [Selection Sort](#selection-sort)
+      - [Merge Sort](#merge-sort)
+      - [Quick Sort](#quick-sort)
 
 ## Environment
 
@@ -814,3 +825,191 @@ console.log(avl_tree.levelOrder()); //[7,5,10]
 ```
 
 ## Algorithms
+
+### Search
+
+#### Linear Search
+
+在資料未經過排序時(unordered)，線性搜尋是一個非常簡單、資料量少最常用的搜尋方式。
+
+##### Time Complexity
+
+$O(n)$
+
+```typescript
+const arr = [3, 6, 8, 1, 0];
+
+function linearSearch(arr: number[], target: number) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (arr[i] == target) return `The target's index is ${i}`;
+  }
+  return `${target} doesn't exist the arr`;
+}
+
+console.log(linearSearch(arr, 6)); //The target's index is 6
+```
+
+#### Binary Search
+
+##### Time Complexity
+
+$O(log_2n)$
+
+```typescript
+const arr = [1, 3, 5, 7, 9, 11, 13];
+
+function binarySearch(arr: number[], target: number) {
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left <= right) {
+    let middle = Math.floor((left + right) / 2);
+    //boundary
+    if (!arr[middle]) return `The target ${target} is out of the array.`;
+
+    if (arr[middle] == target) {
+      return middle;
+    } else if (arr[middle] > target) {
+      right = middle - 1;
+    } else {
+      left = middle + 1;
+    }
+  }
+}
+
+console.log(binarySearch(arr, 100)); // The target 100 is out of the array
+console.log(binarySearch(arr, 13)); // 6
+```
+
+### Sort
+
+#### Bubble Sort
+
+$O(n^2)$
+
+```typescript
+const arr: number[] = [1, 3, 0, 6, 2];
+
+function bubbleSort(arr: number[]): number[] {
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 0; j < arr.length - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        const temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
+    }
+  }
+  return arr;
+}
+
+console.log(bubbleSort(arr)); // [0, 1, 2, 3, 6]
+```
+
+#### Insertion Sort
+
+$O(n^2)$
+
+```typescript
+const arr: number[] = [1, 3, 0, 6, 2, -1];
+
+function insertionSort(arr: number[]): number[] {
+  for (let i = 1; i < arr.length; i++) {
+    let index = null;
+    for (let j = i - 1; j > 0; j--) {
+      if (arr[j] > arr[i]) {
+        index = j;
+      }
+    }
+
+    if (index != null) {
+      // swap
+      const temp = arr[i];
+      arr[i] = arr[index];
+      arr[index] = temp;
+    }
+  }
+  return arr;
+}
+
+console.log(insertionSort(arr));
+```
+
+#### Selection Sort
+
+$O(n^2)$
+
+```typescript
+const arr: number[] = [1, 3, 0, 6, 2, -1];
+function selectionSort(arr: number[]): number[] {
+  for (let i = 0; i < arr.length; i++) {
+    let index = i; //default
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[j] < arr[index]) {
+        index = j;
+      }
+    }
+
+    // swap
+    const temp = arr[i];
+    arr[i] = arr[index];
+    arr[index] = temp;
+  }
+  return arr;
+}
+
+console.log(selectionSort(arr)); //[ -1, 0, 1, 2, 3, 6 ]
+```
+
+#### Merge Sort
+
+- $Dividing(O(log_2n))$
+- $Merging(O(n))$
+- $Dividing * Merging = O(nlogn)$
+
+  每次都必須切割，當陣列長度只有 1 時，就代表已排序完畢。
+
+```typescript
+function mergeSort(arr: number[]): number[] {
+  if (arr.length == 1) return arr;
+
+  const middle = Math.floor(arr.length / 2);
+  const left = arr.slice(0, middle);
+  const right = arr.slice(middle, arr.length);
+  return merge(mergeSort(left), mergeSort(right));
+}
+```
+
+每次必須比較左右的陣列，並且收尾的部分，有可能右邊、或左邊超過一個元素，所以利用 while loop。
+
+```typescript
+function merge(left: number[] = [], right: number[] = []): number[] {
+  const arr: number[] = [];
+  let l_index = 0;
+  let r_index = 0;
+
+  while (l_index < left.length && r_index < right.length) {
+    if (left[l_index] < right[r_index]) {
+      arr.push(left[l_index]);
+      l_index++;
+    } else {
+      arr.push(right[r_index]);
+      r_index++;
+    }
+  }
+
+  while (l_index < left.length) {
+    arr.push(left[l_index]);
+    l_index++;
+  }
+
+  while (r_index < right.length) {
+    arr.push(right[r_index]);
+    r_index++;
+  }
+  console.log(arr);
+  return arr;
+}
+```
+
+#### Quick Sort
